@@ -123,7 +123,7 @@ jobs:
         shell: pwsh
         run: |
           winget install --id Microsoft.VisualStudio.2019.BuildTools --silent --accept-package-agreements
-        timeout-minutes: 5
+        timeout-minutes: 10
 
       - name: Build Windows
         run: flutter build windows --release
