@@ -8,6 +8,8 @@ on:
     tags:
       - 'v*'  # 当推送 v 开头的tag时触发，如 v1.0.0
   workflow_dispatch:
+nenv:
+  FLUTTER_VERSION: '3.27.0'
 
 
 jobs:
@@ -28,6 +30,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
 
       - name: Get dependencies
@@ -68,6 +71,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
 
       - name: Get dependencies
@@ -100,10 +104,15 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
 
       - name: Get dependencies
         run: flutter pub get
+
+      - name: Patch Flutter SDK for VS 2026
+        shell: pwsh
+        run: .github/scripts/patch_vs2026.ps1
 
       - name: Build Windows
         run: flutter build windows --release
@@ -171,7 +180,7 @@ jobs:
             ### 📋 Release Information
             **Version:** ${{ github.ref_name }}
             **Previous Version:** ${{ steps.previoustag.outputs.tag }}
-            **Build Environment:** Flutter latest stable
+            **Build Environment:** Flutter ${{ env.FLUTTER_VERSION }}
             
             ### 📝 Changelog
             ${{ steps.commits.outputs.commits }}
